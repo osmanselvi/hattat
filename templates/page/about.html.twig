@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hakkında - Hattat Biyografisi{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="text-ink display-4">Hakkında</h1>
+        <div class="mx-auto" style="width: 60px; height: 3px; background-color: var(--color-gold);"></div>
+    </div>
+
+    <div class="row align-items-center mb-5 pb-4">
+        <div class="col-md-5 mb-4 mb-md-0 text-center">
+            <div class="p-3 bg-white shadow-sm artwork-frame d-inline-block">
+                <!-- Placeholder for Hattat Photo -->
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 300px; height: 400px; max-width: 100%;">
+                    Hattat Fotoğrafı
+                </div>
+            </div>
+        </div>
+        <!-- Biography Section -->
+        <div class="col-md-7">
+            <h2 class="text-ink mb-4">Hakkımda</h2>
+            <div class="lead text-muted mb-4" style="line-height: 1.8;">
+                {{ site_settings().aboutText|default('Klasik Türk İslam Sanatları alanında uzun yıllardır süren bir tutku ve özveriyle çalışmaktayım.')|nl2br }}
+            </div>
+            <p class="fs-5 text-muted" style="line-height: 1.8;">
+                Sanat eserlerimde klasik Hüsn-i Hat kurallarına bağlı kalırken, modern tasarım pratiklerinden de ilham alıyorum. Eserlerimde özellikle Celî Sülüs ve Nesih yazı çeşitlerine yoğunlaşıyorum. Hem yurt içinde hem de yurt dışında sayısız sergiye katıldım, birçok ulusal ödülün sahibiyim.
+            </p>
+        </div>
+    </div>
+
+    <!-- Awards and Certifications -->
+    <div class="bg-parchment p-5 rounded shadow-sm">
+        <h3 class="text-center text-ink mb-4">Sertifikalar ve Ödüller</h3>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <i class="bi bi-award fs-1 text-gold mb-3"></i>
+                <h5>Uluslararası Hat Yarışması Birinciliği</h5>
+                <p class="text-muted">2022</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-bookmark-star fs-1 text-gold mb-3"></i>
+                <h5>Hüsn-i Hat İcazetnamesi</h5>
+                <p class="text-muted">2015</p>
+            </div>
+            <div class="col-md-4">
+                <i class="bi bi-trophy fs-1 text-gold mb-3"></i>
+                <h5>Kültür ve Sanat Büyük Ödülü</h5>
+                <p class="text-muted">2019</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

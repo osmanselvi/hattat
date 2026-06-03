@@ -1,0 +1,44 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}{{ student.user.name }} ile Mesajlaşma{% endblock %}
+
+{% block main %}
+<style>
+.chat-container { height: 400px; overflow-y: auto; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+.message { max-width: 75%; padding: 10px 15px; margin-bottom: 15px; border-radius: 15px; }
+.message.admin { background: #007bff; color: white; margin-left: auto; border-bottom-right-radius: 0; }
+.message.student { background: #e9ecef; color: black; margin-right: auto; border-bottom-left-radius: 0; }
+</style>
+
+<div class="container-fluid mt-4">
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="chat-container mb-3" id="chatContainer">
+                {% for message in messages %}
+                    <div class="message {{ message.senderRole == 'ROLE_ADMIN' ? 'admin' : 'student' }}">
+                        {{ message.content|nl2br }}
+                        <div class="small mt-1 text-{{ message.senderRole == 'ROLE_ADMIN' ? 'light' : 'muted' }} text-end" style="font-size: 0.7rem;">
+                            {{ message.sentAt|date('d.m.Y H:i') }}
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center mt-5">Henüz mesaj yok.</p>
+                {% endfor %}
+            </div>
+            
+            <form method="post">
+                <div class="input-group">
+                    <textarea class="form-control" name="content" rows="2" placeholder="Mesajınızı yazın..." required></textarea>
+                    <button class="btn btn-primary" type="submit">Gönder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Scroll to bottom
+    const container = document.getElementById('chatContainer');
+    container.scrollTop = container.scrollHeight;
+</script>
+{% endblock %}

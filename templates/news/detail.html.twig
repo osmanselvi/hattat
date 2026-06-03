@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ news.title }} - Haberler{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('app_home') }}" class="text-decoration-none text-muted">Ana Sayfa</a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('app_news') }}" class="text-decoration-none text-gold">Haberler</a></li>
+                </ol>
+            </nav>
+
+            <h1 class="text-ink mb-3 display-5">{{ news.title }}</h1>
+            <p class="text-muted mb-4">
+                <i class="bi bi-clock"></i> {{ news.publishedAt|date('d F Y') }} tarihinde yayınlandı
+            </p>
+
+            {% if news.coverImage %}
+                <img src="{{ asset('uploads/news/' ~ news.coverImage) }}" class="img-fluid rounded shadow-sm w-100 mb-5" alt="{{ news.title }}">
+            {% endif %}
+
+            <div class="news-content fs-5 text-dark" style="line-height: 1.8;">
+                {{ news.content|nl2br }}
+            </div>
+
+            <!-- Social Share Buttons -->
+            <div class="mt-5 pt-4 border-top">
+                <h5 class="text-ink mb-3">Bu Haberi Paylaş</h5>
+                <a href="https://twitter.com/intent/tweet?text={{ news.title|url_encode }}&url={{ app.request.uri|url_encode }}" target="_blank" class="btn btn-outline-dark me-2">
+                    Twitter
+                </a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ app.request.uri|url_encode }}" target="_blank" class="btn btn-outline-dark me-2">
+                    Facebook
+                </a>
+                <a href="https://wa.me/?text={{ (news.title ~ ' ' ~ app.request.uri)|url_encode }}" target="_blank" class="btn btn-outline-dark">
+                    WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

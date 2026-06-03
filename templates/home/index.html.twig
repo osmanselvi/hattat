@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hattat Portfolyo - Geleneksel İslam Sanatları{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+{% set heroImage = heroArtwork ? asset('uploads/artworks/' ~ heroArtwork.imagePath) : asset('images/hero-bg.jpg') %}
+<div class="bg-dark text-white text-center py-5" style="background: url('{{ heroImage }}') no-repeat center center/cover; min-height: 60vh; display: flex; align-items: center; position: relative;">
+    <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(26, 26, 46, 0.7);"></div>
+    <div class="container position-relative z-index-1">
+        <h1 class="display-3 text-gold mb-4">{{ site_settings().heroTitle|default('Geleneksel Çizgide<br>Modern Bir Soluk')|raw }}</h1>
+        <p class="lead mb-5 fs-4">{{ site_settings().heroSubtitle|default('Geleneksel İslam sanatlarının zarif dünyasına hoş geldiniz.') }}</p>
+        <a href="{{ path('app_gallery') }}" class="btn btn-outline-light btn-lg me-3">Eserleri İncele</a>
+        <a href="{{ path('app_contact') }}" class="btn btn-primary btn-lg">İletişime Geç</a>
+    </div>
+</div>
+
+<!-- Featured Artworks -->
+<div class="container py-5 mt-5">
+    <div class="text-center mb-5">
+        <h2 class="text-ink">Öne Çıkan Eserler</h2>
+        <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--color-gold);"></div>
+    </div>
+    <div class="row g-4">
+        {% for artwork in featuredArtworks %}
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <img src="{{ asset('uploads/artworks/' ~ artwork.imagePath) }}" class="card-img-top artwork-frame" alt="{{ artwork.title }}">
+                    <div class="card-body text-center mt-3">
+                        <h5 class="card-title text-ink font-weight-bold">{{ artwork.title }}</h5>
+                        <p class="text-gold small mb-0">{{ artwork.category }}</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center text-muted">
+                <p>Henüz öne çıkan eser bulunmuyor.</p>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-5">
+        <a href="{{ path('app_gallery') }}" class="btn btn-outline-dark">Tüm Galeriyi Gör</a>
+    </div>
+</div>
+
+<!-- Upcoming Exhibitions -->
+<div class="bg-parchment py-5">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <h2 class="text-ink">Yaklaşan Sergiler</h2>
+            <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--color-gold);"></div>
+        </div>
+        <div class="row g-4 justify-content-center">
+            {% for exhibition in upcomingExhibitions %}
+                <div class="col-md-4">
+                    <div class="card shadow-sm h-100 border-0">
+                        {% if exhibition.coverImage %}
+                            <img src="{{ asset('uploads/exhibitions/' ~ exhibition.coverImage) }}" class="card-img-top" alt="{{ exhibition.title }}" style="height: 200px; object-fit: cover;">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ exhibition.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-gold"><i class="bi bi-calendar3"></i> {{ exhibition.startDate|date('d.m.Y') }} - {{ exhibition.endDate|date('d.m.Y') }}</h6>
+                            <p class="text-muted small"><i class="bi bi-geo-alt"></i> {{ exhibition.location }}</p>
+                            <a href="{{ path('app_exhibition_detail', {'id': exhibition.id}) }}" class="btn btn-sm btn-outline-primary mt-2">Detayları Gör</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Latest News -->
+<div class="container py-5 mt-4">
+    <div class="text-center mb-5">
+        <h2 class="text-ink">Son Haberler</h2>
+        <div class="mx-auto" style="width: 50px; height: 3px; background-color: var(--color-gold);"></div>
+    </div>
+    <div class="row g-4">
+        {% for item in latestNews %}
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100 border-0">
+                    {% if item.coverImage %}
+                        <img src="{{ asset('uploads/news/' ~ item.coverImage) }}" class="card-img-top" alt="{{ item.title }}" style="height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <small class="text-muted">{{ item.publishedAt|date('d.m.Y') }}</small>
+                        <h5 class="card-title mt-2">{{ item.title }}</h5>
+                        <p class="card-text text-truncate">{{ item.content|striptags }}</p>
+                        <a href="{{ path('app_news_detail', {'slug': item.slug}) }}" class="text-decoration-none text-deep font-weight-bold">Devamını Oku &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

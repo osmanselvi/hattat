@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tüm Ödevlerim{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Ödevlerim</h2>
+        <a href="{{ path('app_student_dashboard') }}" class="btn btn-outline-secondary">Panele Dön</a>
+    </div>
+
+    <div class="row">
+        {% for assignment in assignments %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ assignment.title }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Son Tarih: {{ assignment.dueDate|date('d.m.Y') }}</h6>
+                        <p class="card-text text-truncate">{{ assignment.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ path('app_student_assignment_detail', {'id': assignment.id}) }}" class="btn btn-primary btn-sm">Detay</a>
+                            {% if assignment.status == 'beklemede' %}
+                                <span class="badge bg-warning text-dark">Beklemede</span>
+                            {% elseif assignment.status == 'teslim edildi' %}
+                                <span class="badge bg-info">Teslim Edildi</span>
+                            {% else %}
+                                <span class="badge bg-success">Düzeltildi</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">Henüz atanmış bir ödev bulunmuyor.</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

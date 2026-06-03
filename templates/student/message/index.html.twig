@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hattat ile Mesajlaşma{% endblock %}
+
+{% block body %}
+<style>
+.chat-container { height: 500px; overflow-y: auto; padding: 20px; background: white; border-radius: 10px; border: 1px solid #dee2e6; }
+.message { max-width: 75%; padding: 12px 18px; margin-bottom: 20px; border-radius: 20px; position: relative; }
+.message.student { background: var(--color-deep); color: white; margin-left: auto; border-bottom-right-radius: 0; }
+.message.admin { background: var(--color-parchment); color: var(--color-ink); margin-right: auto; border-bottom-left-radius: 0; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.message-time { font-size: 0.75rem; position: absolute; bottom: -20px; width: 100px; }
+.message.student .message-time { right: 0; text-align: right; color: #6c757d; }
+.message.admin .message-time { left: 0; text-align: left; color: #6c757d; }
+</style>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="list-group shadow-sm">
+                <a href="{{ path('app_student_dashboard') }}" class="list-group-item list-group-item-action">Panelim</a>
+                <a href="{{ path('app_student_assignments') }}" class="list-group-item list-group-item-action">Ödevlerim</a>
+                <a href="{{ path('app_student_corrections') }}" class="list-group-item list-group-item-action">Düzeltmelerimi Gör</a>
+                <a href="{{ path('app_student_messages') }}" class="list-group-item list-group-item-action active">Mesajlar</a>
+                <a href="{{ path('app_student_profile') }}" class="list-group-item list-group-item-action">Profilim</a>
+            </div>
+        </div>
+        
+        <div class="col-md-9">
+            <h3 class="text-gold mb-4">Hattat ile Mesajlaşma</h3>
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="chat-container mb-0 rounded-0 rounded-top" id="chatContainer">
+                        {% for message in messages %}
+                            <div class="message {{ message.senderRole == 'ROLE_STUDENT' ? 'student' : 'admin' }}">
+                                {{ message.content|nl2br }}
+                                <div class="message-time">
+                                    {{ message.sentAt|date('d.m.Y H:i') }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="d-flex justify-content-center align-items-center h-100">
+                                <p class="text-muted">Buradan hattatınızla iletişime geçebilirsiniz. Sorularınızı çekinmeden sorabilirsiniz.</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="p-3 bg-light border-top rounded-bottom">
+                        <form method="post">
+                            <div class="input-group">
+                                <textarea class="form-control border-0 shadow-none" name="content" rows="2" placeholder="Mesajınızı buraya yazın..." style="resize: none;" required></textarea>
+                                <button class="btn btn-primary px-4" type="submit">Gönder <i class="bi bi-send ms-1"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Scroll to bottom automatically
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.getElementById('chatContainer');
+        container.scrollTop = container.scrollHeight;
+    });
+</script>
+{% endblock %}

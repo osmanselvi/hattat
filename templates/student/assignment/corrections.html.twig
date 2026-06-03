@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Düzeltmelerimi Gör{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <h2 class="mb-4 text-gold">Düzeltmelerim</h2>
+
+    {% for submission in submissions %}
+        <div class="card shadow-sm mb-5 border-0">
+            <div class="card-header bg-parchment py-3 d-flex justify-content-between align-items-center">
+                <h5 class="m-0 text-ink">{{ submission.assignment.title }}</h5>
+                <span class="text-muted">{{ submission.submittedAt|date('d.m.Y') }}</span>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <!-- Original -->
+                    <div class="col-md-5 text-center mb-4 mb-md-0">
+                        <h6 class="text-muted mb-3">Senin Teslimin</h6>
+                        <img src="{{ asset('uploads/submissions/' ~ submission.imagePath) }}" class="img-fluid img-thumbnail shadow-sm" alt="Teslim">
+                        {% if submission.studentNote %}
+                            <div class="mt-3 p-2 bg-light rounded text-start small">
+                                <strong>Senin Notun:</strong><br>{{ submission.studentNote|nl2br }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Arrow -->
+                    <div class="col-md-2 text-center fs-1 text-gold d-none d-md-block">
+                        <i class="bi bi-arrow-right-circle"></i>
+                        ✒️
+                    </div>
+
+                    <!-- Correction -->
+                    <div class="col-md-5 text-center">
+                        <h6 class="text-muted mb-3">Hattatın Düzeltmesi</h6>
+                        {% if submission.correction %}
+                            {% if submission.correction.correctedImagePath %}
+                                <img src="{{ asset('uploads/corrections/' ~ submission.correction.correctedImagePath) }}" class="img-fluid img-thumbnail artwork-frame" alt="Düzeltme">
+                            {% endif %}
+                            
+                            {% if submission.correction.teacherNote %}
+                                <div class="mt-3 p-3 bg-parchment rounded text-start">
+                                    <strong class="text-deep">Hattatın Notu:</strong><br>
+                                    {{ submission.correction.teacherNote|nl2br }}
+                                </div>
+                            {% endif %}
+                            <p class="text-muted small mt-2">Düzeltme Tarihi: {{ submission.correction.correctedAt|date('d.m.Y') }}</p>
+                        {% else %}
+                            <div class="p-5 bg-light rounded border border-dashed d-flex align-items-center justify-content-center" style="min-height: 200px;">
+                                <p class="text-muted mb-0">Hattatınız henüz düzeltme yüklemedi.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info shadow-sm">
+            Henüz teslim edilmiş bir ödeviniz bulunmuyor.
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

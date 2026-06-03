@@ -1,0 +1,67 @@
+:root {
+  --color-ink:       #1a1a2e;   /* Mürekkep siyahı */
+  --color-parchment: #f5f0e8;   /* Parşömen krem */
+  --color-gold:      #c9a84c;   /* Altın vurgu */
+  --color-deep:      #2d4a3e;   /* Koyu yeşil aksam */
+  --color-light:     #fdfcf9;   /* Arka plan */
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--color-light);
+  color: var(--color-ink);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+  font-family: 'Amiri', serif;
+}
+
+.bg-parchment {
+  background-color: var(--color-parchment) !important;
+}
+
+.text-ink {
+  color: var(--color-ink) !important;
+}
+
+.text-gold {
+  color: var(--color-gold) !important;
+}
+
+.btn-primary {
+  background-color: var(--color-deep);
+  border-color: var(--color-deep);
+}
+
+.btn-primary:hover {
+  background-color: #1f352c;
+  border-color: #1f352c;
+}
+
+.artwork-frame {
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  border: 4px solid var(--color-parchment);
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 10px;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+}
+
+footer a {
+  color: var(--color-gold);
+}
+
+footer a:hover {
+  color: #fff;
+}

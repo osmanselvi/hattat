@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Eser Galerisi{% endblock %}
+
+{% block stylesheets %}
+<style>
+.masonry-grid {
+    column-count: 3;
+    column-gap: 1.5rem;
+}
+@media (max-width: 992px) { .masonry-grid { column-count: 2; } }
+@media (max-width: 576px) { .masonry-grid { column-count: 1; } }
+
+.masonry-item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
+.masonry-item img {
+    width: 100%;
+    transition: transform 0.3s ease;
+}
+.masonry-item:hover img {
+    transform: scale(1.03);
+}
+.masonry-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(26,26,46,0.8);
+    color: white;
+    padding: 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.masonry-item:hover .masonry-overlay {
+    opacity: 1;
+}
+
+/* Lightbox Modal */
+#lightbox {
+    display: none; position: fixed; z-index: 9999;
+    padding-top: 50px; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.9);
+}
+#lightbox img {
+    margin: auto; display: block; max-height: 80vh; max-width: 90vw;
+    border: 5px solid var(--color-parchment);
+}
+#lightbox-caption {
+    margin: auto; display: block; width: 80%; text-align: center;
+    color: #ccc; padding: 10px 0; font-size: 20px; font-family: 'Amiri', serif;
+}
+#lightbox .close {
+    position: absolute; top: 15px; right: 35px; color: #f1f1f1;
+    font-size: 40px; font-weight: bold; cursor: pointer;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="text-ink display-4">Eser Galerisi</h1>
+        <div class="mx-auto" style="width: 60px; height: 3px; background-color: var(--color-gold);"></div>
+    </div>
+
+    <!-- Filters -->
+    <div class="d-flex justify-content-center flex-wrap mb-5 gap-2">
+        <a href="{{ path('app_gallery') }}" class="btn rounded-pill {{ currentCategory == null ? 'btn-dark' : 'btn-outline-dark' }}">Tümü</a>
+        {% for cat in ['Celî Sülüs', 'Nesih', "Ta'lîk", "Rık'a", 'Dîvânî', 'Diğer'] %}
+            <a href="{{ path('app_gallery', {'kategori': cat}) }}" class="btn rounded-pill {{ currentCategory == cat ? 'btn-dark' : 'btn-outline-dark' }}">{{ cat }}</a>
+        {% endfor %}
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="masonry-grid">
+        {% for artwork in artworks %}
+            <div class="masonry-item artwork-frame p-2" onclick="openLightbox('{{ asset('uploads/artworks/' ~ artwork.imagePath) }}', '{{ artwork.title|escape('js') }}')">
+                <img src="{{ asset('uploads/artworks/' ~ artwork.imagePath) }}" alt="{{ artwork.title }}">
+                <div class="masonry-overlay">
+                    <h5 class="mb-0">{{ artwork.title }}</h5>
+                    <small class="text-gold">{{ artwork.category }}</small>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">Bu kategoride eser bulunamadı.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Vanilla JS Lightbox -->
+<div id="lightbox" onclick="closeLightbox(event)">
+    <span class="close" onclick="closeLightbox(event)">&times;</span>
+    <img id="lightbox-img">
+    <div id="lightbox-caption"></div>
+</div>
+
+<script>
+function openLightbox(imgSrc, captionText) {
+    document.getElementById('lightbox').style.display = 'block';
+    document.getElementById('lightbox-img').src = imgSrc;
+    document.getElementById('lightbox-caption').innerText = captionText;
+    document.body.style.overflow = 'hidden'; // prevent scrolling
+}
+function closeLightbox(event) {
+    if (event.target.id === 'lightbox' || event.target.className === 'close') {
+        document.getElementById('lightbox').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+</script>
+{% endblock %}

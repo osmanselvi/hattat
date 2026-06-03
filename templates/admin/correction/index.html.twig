@@ -1,0 +1,48 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Tüm Teslimler ve Düzeltmeler{% endblock %}
+
+{% block main %}
+<div class="container-fluid mt-4">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Öğrenci</th>
+                            <th>Ödev</th>
+                            <th>Durum</th>
+                            <th>Teslim Tarihi</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for submission in submissions %}
+                        <tr>
+                            <td>{{ submission.id }}</td>
+                            <td>{{ submission.student.user.name }}</td>
+                            <td>{{ submission.assignment.title }}</td>
+                            <td>
+                                {% if submission.correction %}
+                                    <span class="badge bg-success">Düzeltildi</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">Beklemede</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ submission.submittedAt|date('d.m.Y H:i') }}</td>
+                            <td>
+                                <a href="{{ path('admin_correction_edit', {'id': submission.id}) }}" class="btn btn-sm btn-primary">
+                                    {{ submission.correction ? 'Düzeltmeyi Görüntüle / Düzenle' : 'Düzeltme Yap' }}
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Mesajlar{% endblock %}
+
+{% block main %}
+<div class="container-fluid mt-4">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Öğrenci Listesi</h6>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                {% for student in students %}
+                    <a href="{{ path('admin_message_chat', {'id': student.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        {{ student.user.name }}
+                        {# İleride okunmamış mesaj sayısı buraya eklenebilir #}
+                        <i class="fas fa-chevron-right text-muted"></i>
+                    </a>
+                {% else %}
+                    <p class="text-muted">Kayıtlı öğrenci bulunmuyor.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

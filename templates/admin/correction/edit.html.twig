@@ -1,0 +1,61 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Düzeltme Ekranı{% endblock %}
+
+{% block main %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sol: Öğrencinin Yüklediği Görsel -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="m-0 font-weight-bold">Öğrenci Teslimi</h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>Öğrenci:</strong> {{ submission.student.user.name }}</p>
+                    <p><strong>Ödev:</strong> {{ submission.assignment.title }}</p>
+                    <p><strong>Öğrenci Notu:</strong> {{ submission.studentNote|default('-') }}</p>
+                    
+                    <div class="text-center mt-3">
+                        {% if submission.imagePath %}
+                            <img src="{{ asset('uploads/submissions/' ~ submission.imagePath) }}" class="img-fluid border" alt="Öğrenci Teslimi">
+                        {% else %}
+                            <p class="text-muted">Görsel yüklenmemiş.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ: Öğretmen Düzeltme Formu -->
+        <div class="col-md-6 mb-4">
+            <div class="card shadow h-100">
+                <div class="card-header bg-success text-white">
+                    <h6 class="m-0 font-weight-bold">Düzeltme Formu</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="correctedImage" class="form-label">Düzeltilmiş Görsel Yükle (Eğer yeni dosya yüklenirse eskisinin üzerine yazılır)</label>
+                            <input type="file" class="form-control" id="correctedImage" name="correctedImage" accept="image/jpeg, image/png">
+                            {% if submission.correction and submission.correction.correctedImagePath %}
+                                <div class="mt-2">
+                                    <small class="text-muted">Mevcut Düzeltme:</small>
+                                    <img src="{{ asset('uploads/corrections/' ~ submission.correction.correctedImagePath) }}" class="img-thumbnail d-block mt-1" style="max-height: 150px;">
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="teacherNote" class="form-label">Öğretmen Notu</label>
+                            <textarea class="form-control" id="teacherNote" name="teacherNote" rows="5">{{ submission.correction ? submission.correction.teacherNote : '' }}</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">Kaydet ve Öğrenciye İlet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

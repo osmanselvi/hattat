@@ -1,0 +1,70 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Dashboard{% endblock %}
+
+{% block main %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-primary text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Toplam Öğrenci</h5>
+                    <h2 class="display-4">{{ studentCount }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-warning text-dark shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Bekleyen Düzeltme</h5>
+                    <h2 class="display-4">{{ pendingCorrectionsCount }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-success text-white shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Aktif Sergiler</h5>
+                    <h2 class="display-4">{{ activeExhibitions }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Düzeltme Bekleyen Teslimler (Acil Görünüm)</h6>
+        </div>
+        <div class="card-body">
+            {% if pendingCorrections|length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Öğrenci</th>
+                                <th>Ödev Başlığı</th>
+                                <th>Teslim Tarihi</th>
+                                <th>Aksiyon</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for submission in pendingCorrections %}
+                            <tr>
+                                <td>{{ submission.student.user.name }}</td>
+                                <td>{{ submission.assignment.title }}</td>
+                                <td>{{ submission.submittedAt|date('d.m.Y H:i') }}</td>
+                                <td>
+                                    <a href="{{ path('admin_correction_edit', {'id': submission.id}) }}" class="btn btn-sm btn-primary">Düzeltme Yap</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>Bekleyen düzeltme bulunmuyor.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
